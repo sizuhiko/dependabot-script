@@ -42,6 +42,9 @@ directory = ENV["DIRECTORY_PATH"] || "/"
 # - terraform
 package_manager = ENV["PACKAGE_MANAGER"] || "bundler"
 
+# Branch name if you do not want to use default branch
+branch_name = ENV["SOURCE_BRANCH"]
+
 if ENV["GITHUB_ENTERPRISE_ACCESS_TOKEN"]
   credentials << {
     "type" => "git_source",
@@ -56,7 +59,7 @@ if ENV["GITHUB_ENTERPRISE_ACCESS_TOKEN"]
     api_endpoint: "https://#{ENV['GITHUB_ENTERPRISE_HOSTNAME']}/api/v3/",
     repo: repo_name,
     directory: directory,
-    branch: nil,
+    branch: branch_name,
   )
 elsif ENV["GITLAB_ACCESS_TOKEN"]
   gitlab_hostname = ENV["GITLAB_HOSTNAME"] || "gitlab.com"
@@ -74,7 +77,7 @@ elsif ENV["GITLAB_ACCESS_TOKEN"]
     api_endpoint: "https://#{gitlab_hostname}/api/v4",
     repo: repo_name,
     directory: directory,
-    branch: nil,
+    branch: branch_name,
   )
 elsif ENV["AZURE_ACCESS_TOKEN"]
   azure_hostname = ENV["AZURE_HOSTNAME"] || "dev.azure.com"
@@ -92,14 +95,14 @@ elsif ENV["AZURE_ACCESS_TOKEN"]
     api_endpoint: "https://#{azure_hostname}/",
     repo: repo_name,
     directory: directory,
-    branch: nil,
+    branch: branch_name,
   )
 else
   source = Dependabot::Source.new(
     provider: "github",
     repo: repo_name,
     directory: directory,
-    branch: nil,
+    branch: branch_name,
   )
 end
 
